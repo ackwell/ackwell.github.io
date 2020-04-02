@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="main.css?{{ site.time | date: '%s' }}">
 
   <script src="https://kit.fontawesome.com/af2dc5faac.js" crossorigin="anonymous"></script>
+  <script src="main.js?{{ site.time | date: '%s' }}"></script>
 </head>
 <body>
   <div class="wrapper">
@@ -32,7 +33,7 @@
             <i class="icon fab fa-{{ social.icon }}"></i>
 
             {%- if social.url -%}
-              <a href="{{ social.url }}" title="{{ social.username }}" target="_blank">
+              <a href="{{ social.url }}" title="{{ social.username }}">
             {%- endif -%}
 
             {{ social.username }}
