@@ -3,6 +3,7 @@
 
 $max-page-width: 1000px;
 $page-color: white;
+$text-color: black;
 $line-color: #ddd;
 $gutter-size: 20px;
 $overflow-width: 20px;
@@ -11,6 +12,21 @@ body {
   font-family: monospace;
   margin: 0;
   background: $page-color;
+  color: $text-color;
+}
+
+* + * {
+  margin-top: 1em;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline $line-color;
+  transition: color .2s ease-in-out;
+
+  &:hover {
+    color: $line-color;
+  }
 }
 
 .content {
@@ -79,5 +95,20 @@ hr {
     width: $overflow-width;
     height: 1px;
     background: linear-gradient(to right, rgba(0,0,0,0) 0%, white 100%);
+  }
+}
+
+.social {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  // Move the decoration to the username so the icon doesn't chew it
+  a {
+    text-decoration: none;
+  }
+
+  .username {
+    text-decoration: underline $line-color;
   }
 }
