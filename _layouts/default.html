@@ -26,7 +26,7 @@
         {% for social in site.data.social %}
           <li>
             {% if social.url %}
-              <a href="{{ social.url }}">
+              <a href="{{ social.url }}" title="{{ social.username }}" target="_blank">
             {% endif %}
                 <i class="icon fab fa-{{ social.icon }}"></i>
                 <span class="username">{{ social.username }}</span>
