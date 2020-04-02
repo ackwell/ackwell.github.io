@@ -8,14 +8,14 @@
   <script src="https://kit.fontawesome.com/af2dc5faac.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="content">
+  <div class="wrapper">
     <header>
       <h1>{{ site.title }}</h1>
     </header>
 
     <hr>
 
-    <main>
+    <main class="content">
       {{ content }}
     </main>
 
@@ -25,14 +25,17 @@
       <ul class="social">
         {% for social in site.data.social %}
           <li>
-            {% if social.url %}
+            <i class="icon fab fa-{{ social.icon }}"></i>
+
+            {%- if social.url -%}
               <a href="{{ social.url }}" title="{{ social.username }}" target="_blank">
-            {% endif %}
-                <i class="icon fab fa-{{ social.icon }}"></i>
-                <span class="username">{{ social.username }}</span>
-            {% if social.url %}
+            {%- endif -%}
+
+            {{ social.username }}
+
+            {%- if social.url -%}
               </a>
-            {% endif %}
+            {%- endif -%}
           </li>
         {% endfor %}
       </ul>

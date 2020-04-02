@@ -15,21 +15,27 @@ body {
   color: $text-color;
 }
 
-* + * {
-  margin-top: 1em;
-}
-
 a {
   color: inherit;
-  text-decoration: underline $line-color;
+  text-decoration: none;
   transition: color .2s ease-in-out;
 
   &:hover {
-    color: $line-color;
+    color: lighten($text-color, 70%);
+  }
+
+  &::before {
+    content: '[';
+    color: $text-color;
+  }
+
+  &::after {
+    content: ']';
+    color: $text-color;
   }
 }
 
-.content {
+.wrapper {
   position: relative;
   margin: 0 auto;
   padding: $gutter-size ($gutter-size + $overflow-width);
@@ -64,6 +70,7 @@ h1, h2 {
 
 hr {
   position: relative;
+  margin: 1em 0;
   margin-left: -($gutter-size + $overflow-width);
   border: none;
   width: 50%;
@@ -94,7 +101,31 @@ hr {
     right: 0;
     width: $overflow-width;
     height: 1px;
-    background: linear-gradient(to right, rgba(0,0,0,0) 0%, white 100%);
+    background: linear-gradient(to right, rgba(0,0,0,0) 0%, $page-color 100%);
+  }
+}
+
+// Compiled page content styling
+.content {
+  p {
+    margin: 1em 0 0 0;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    padding-left: 1em;
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+
+    &::before {
+      content: '-';
+      position: absolute;
+      left: -1em;
+    }
   }
 }
 
@@ -103,16 +134,17 @@ hr {
   padding: 0;
   list-style: none;
 
-  // Move the decoration to the username so the icon doesn't chew it
-  a {
-    text-decoration: none;
+  li {
+    display: inline-block;
 
-    .username {
-      text-decoration: underline $line-color;
+    + li {
+      margin-left: 1em;
     }
   }
 
   .icon {
     width: 1em;
+    padding-right: 0.25em;
+    vertical-align: middle;
   }
 }
