@@ -1,0 +1,83 @@
+---
+---
+
+$max-page-width: 1000px;
+$page-color: white;
+$line-color: #ddd;
+$gutter-size: 20px;
+$overflow-width: 20px;
+
+body {
+  font-family: monospace;
+  margin: 0;
+  background: $page-color;
+}
+
+.content {
+  position: relative;
+  margin: 0 auto;
+  padding: $gutter-size ($gutter-size + $overflow-width);
+  max-width: $max-page-width;
+
+  // Left border
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: $overflow-width;
+    width: 1px;
+    height: 100%;
+    background: $line-color;
+  }
+
+  // Left border fade
+  &::after {
+    content: '';
+    position: absolute;
+    left: $overflow-width;
+    bottom: 0;
+    width: 1px;
+    height: $overflow-width;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, $page-color 100%);
+  }
+}
+
+h1, h2 {
+  margin: 0;
+}
+
+.divider {
+  position: relative;
+  margin-left: -($gutter-size + $overflow-width);
+  border: none;
+  width: 50%;
+  width: calc(50% + #{$overflow-width});
+  height: 1px;
+  background: $line-color;
+  overflow: visible;
+
+  // Slash
+  &::before {
+    $width: 20px;
+
+    content: '';
+    position: absolute;
+    top: 0;
+    left: $overflow-width - $width/2;
+    width: $width;
+    height: 1px;
+    background: $line-color;
+    transform: rotate(-45deg);
+  }
+
+  // Fade
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: $overflow-width;
+    height: 1px;
+    background: linear-gradient(to right, rgba(0,0,0,0) 0%, white 100%);
+  }
+}
