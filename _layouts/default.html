@@ -25,10 +25,14 @@
       <ul class="social">
         {% for social in site.data.social %}
           <li>
-            <a href="{{ social.url }}">
-              <i class="fab fa-{{ social.icon }}"></i>
-              <span class="username">{{ social.username }}</span>
-            </a>
+            {% if social.url %}
+              <a href="{{ social.url }}">
+            {% endif %}
+                <i class="icon fab fa-{{ social.icon }}"></i>
+                <span class="username">{{ social.username }}</span>
+            {% if social.url %}
+              </a>
+            {% endif %}
           </li>
         {% endfor %}
       </ul>

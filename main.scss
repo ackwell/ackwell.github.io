@@ -106,9 +106,13 @@ hr {
   // Move the decoration to the username so the icon doesn't chew it
   a {
     text-decoration: none;
+
+    .username {
+      text-decoration: underline $line-color;
+    }
   }
 
-  .username {
-    text-decoration: underline $line-color;
+  .icon {
+    width: 1em;
   }
 }
