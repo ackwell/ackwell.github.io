@@ -136,9 +136,10 @@ hr {
 
   li {
     display: inline-block;
+    margin-right: 2ch;
 
-    + li {
-      margin-left: 2ch;
+    &:last-child {
+      margin-right: 0;
     }
   }
 
