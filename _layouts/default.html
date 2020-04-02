@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="main.css?{{ site.time | date: '%s' }}">
   <script src="https://kit.fontawesome.com/af2dc5faac.js" crossorigin="anonymous"></script>
 </head>
 <body>
