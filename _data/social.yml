@@ -1,10 +1,14 @@
-- icon: github
+- icon: fas fa-at
+  username: saxon@ackwell.com.au
+  url: mailto:saxon+portfolio@ackwell.com.au
+
+- icon: fab fa-github
   username: ackwell
   url: https://github.com/ackwell
 
-- icon: twitter
+- icon: fab fa-twitter
   username: ackwell_
   url: https://twitter.com/ackwell_
 
-- icon: discord
+- icon: fab fa-discord
   username: ackwell#3835

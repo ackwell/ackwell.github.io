@@ -32,7 +32,7 @@
       <ul class="social">
         {% for social in site.data.social %}
           <li>
-            <i class="icon fab fa-{{ social.icon }}"></i>
+            <i class="icon {{ social.icon }}"></i>
 
             {%- if social.url -%}
               <a href="{{ social.url }}" title="{{ social.username }}">
