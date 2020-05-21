@@ -1,6 +1,8 @@
 ---
 ---
 
+@import 'syntax';
+
 :root {
   --page-color: white;
   --text-color: black;
@@ -15,6 +17,8 @@ body.dark {
   --line-color: #404040;
 }
 
+$font-stack: monospace;
+$font-stack-monospace: $font-stack;
 $max-page-width: 1000px;
 $gutter-size: 20px;
 $overflow-width: 20px;
@@ -23,13 +27,17 @@ $transition-config: .2s ease-in-out;
 $page-color: var(--page-color);
 $text-color: var(--text-color);
 $line-color: var(--line-color);
-$text-hover-color: var(--text-hover-color);
+$text-dim-color: var(--text-hover-color);
 
 body {
-  font-family: monospace;
+  font-family: $font-stack;
   margin: 0;
   background: $page-color;
   color: $text-color;
+}
+
+code {
+  font-family: $font-stack-monospace;
 }
 
 a {
@@ -38,7 +46,7 @@ a {
   transition: color $transition-config;
 
   &:hover {
-    color: $text-hover-color;
+    color: $text-dim-color;
   }
 
   &::before {
@@ -165,6 +173,19 @@ header {
       content: '-';
       position: absolute;
       left: -2ch;
+    }
+  }
+
+  code {
+    &::before,
+    &::after {
+      content: '```';
+      display: block;
+      color: $text-dim-color;
+    }
+
+    &::before {
+      content: '```' attr(data-language);
     }
   }
 }
