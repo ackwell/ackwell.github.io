@@ -33,6 +33,22 @@ function onReady() {
 		codeElem.setAttribute('data-language', language)
 	}
 
+	// Add heading permalinks in content
+	const headingElements = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].join(',')
+	for (const heading of document.querySelector('.content').querySelectorAll(headingElements)) {
+		if (!heading.id) { continue }
+
+		const icon = document.createElement('i')
+		icon.className = 'fas fa-link'
+
+		const link = document.createElement('a')
+		link.append(icon)
+		link.href = '#' + heading.id
+		link.className = 'no-style heading-permalink'
+
+		heading.prepend(link)
+	}
+
 	// Set target=_blank on all external links
 	for (const link of document.querySelectorAll('a')) {
 		if (link.hostname === window.location.hostname) {
