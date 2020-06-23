@@ -26,7 +26,9 @@
           {%- for item in site.data.navigation.header -%}
             {%- assign navPage = site.pages | where: "name",item.page | first -%}
             <li>
+              {%- if page.url == navPage.url %}<strong>{% endif -%}
               <a href="{{ navPage.url }}">{{ navPage.title }}</a>
+              {%- if page.url == navPage.url %}</strong>{% endif -%}
             </li>
           {%- endfor -%}
         </ul>
@@ -37,7 +39,7 @@
 
     <hr>
 
-    <main class="content">
+    <main class="content{% if page.className %} {{ page.className }}{% endif %}">
       {{ content }}
     </main>
 

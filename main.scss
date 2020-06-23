@@ -205,6 +205,12 @@ header {
   }
 }
 
+.posts {
+  article + article {
+    margin-top: 2em;
+  }
+}
+
 .social {
   margin: 0;
   padding: 0;
