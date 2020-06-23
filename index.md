@@ -1,5 +1,6 @@
 ---
 layout: default
+title: about.
 ---
 
 _"it's code. we can do anything."_
