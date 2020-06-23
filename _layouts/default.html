@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+
+  <meta name="twitter:card" content="summary">
+  <meta property="og:url" content="{{ page.url }}">
   <meta property="og:title" content="{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}">
+  {% if page.excerpt %}<meta property="og:description" content="{{ page.excerpt }}">{% endif %}
 
   <meta property="theme-color" content="#DDDDDD">
 
