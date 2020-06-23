@@ -19,10 +19,11 @@ body.dark {
 
 $font-stack: monospace;
 $font-stack-monospace: $font-stack;
-$max-page-width: 1000px;
+$max-page-width: 650px;
 $gutter-size: 20px;
 $overflow-width: 20px;
 $transition-config: .2s ease-in-out;
+$line-width: 75%;
 
 $page-color: var(--page-color);
 $text-color: var(--text-color);
@@ -30,9 +31,10 @@ $line-color: var(--line-color);
 $text-dim-color: var(--text-hover-color);
 
 body {
-  font-family: $font-stack;
   margin: 0;
   background: $page-color;
+  font-family: $font-stack;
+  line-height: 1.3em;
   color: $text-color;
 }
 
@@ -98,8 +100,8 @@ hr {
   margin: 1em 0;
   margin-left: -($gutter-size + $overflow-width);
   border: none;
-  width: 50%;
-  width: calc(50% + #{$overflow-width});
+  width: $line-width;
+  width: calc($line-width + #{$overflow-width});
   height: 1px;
   background: $line-color;
   overflow: visible;
