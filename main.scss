@@ -191,7 +191,17 @@ header {
     }
   }
 
+  // Inline code
   code {
+    color: $text-dim-color;
+    &::before,
+    &::after {
+      content: '`'
+    }
+  }
+
+  // Code highlight blocks
+  .highlight code {
     &::before,
     &::after {
       content: '```';
