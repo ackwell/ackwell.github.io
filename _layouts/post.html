@@ -3,7 +3,12 @@ layout: default
 ---
 
 {% if page.title %}
-  <h2>{{ page.title }}</h2>
+  <h2>
+    <a href="{{ page.url }}" class="no-style heading-permalink">
+      <i class="fas fa-link"></i>
+    </a>
+    {{ page.title }}
+  </h2>
 {% endif %}
 
 {{ content }}
