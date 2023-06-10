@@ -5,7 +5,7 @@ title: about.
 
 _"it's code. we can do anything."_
 
-**frontend engineer** at [canva](https://www.canva.com/).<br>
+**senior software engineer** at [canva](https://www.canva.com/).<br>
 **core maintainer** of [xivanalysis](https://xivanalysis.com/).
 
 **currently** use [react](https://reactjs.org/) and [typescript](https://www.typescriptlang.org/) to turn ideas and designs into something the world can see and use.
