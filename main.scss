@@ -243,6 +243,22 @@ header {
       content: '```' attr(data-language);
     }
   }
+
+  // Blockquotes
+  blockquote {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    padding-left: 2ch;
+    font-style: italic;
+
+    &::before {
+      content: '>';
+      position: absolute;
+      left: 0;
+      font-style: normal;
+    }
+  }
 }
 
 .posts {

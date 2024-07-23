@@ -82,7 +82,7 @@ when i woke up, the ingestion was still going. the database files had swelled we
 
 i started looking into optimisations - how could i minimise the write time? write-ahead logging seemed promising, but i was unsure about how to tune the checkpointing. while researching, i also asked around a little. a friend's message caught my eye.
 
-> sounds like you want a virtual table, not sure how hard would it be to implement one tho
+> sounds like you want a virtual table, not sure how hard would it be to implement one tho <br/>
 > all I know is they exist
 
 i also knew they existed, had seen them in passing while reading sqlite's documentation. virtual tables allow you to register custom code that acts like a table, and can be queried by sqlite - but read its data however you like, rather than from the database file itself. i had originally dismissed them as an option - i didn't want to perform a full table scan for a query if i could avoid it - but my recent escapades in query building and testing had me doubting that position. i told myself i'd give it a quick test.
