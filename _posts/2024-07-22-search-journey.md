@@ -32,7 +32,7 @@ integration of lindera, the japanese-supporting library i eventually chose, went
 
 excitedly, i ran some queries. english, as before was working great! french also seemed to be working as expected, and some quick checks in japanese showed that the stemming was working - at least, as well as i could tell.
 
-but when i checked german - this time looking for "fire" to see if it would pick up some of the related spells such as "fire ii". except, unlike english, the german localisation team had chosen to use the _other_ final fantasy naming scheme for spells. where english had "fire" and "fire ii", german had "feuer" and "feura". this... did not stem well.
+but then i checked german - this time looking for "fire" to see if it would pick up some of the related spells such as "fire ii". except, unlike english, the german localisation team had chosen to use the _other_ final fantasy naming scheme for spells. where english had "fire" and "fire ii", german had "feuer" and "feura". this... did not stem well.
 
 looking into my options here, i was quickly becoming disillusioned with the tokenisation of the strings. as a band-aid, i stripped out the tokenisation filters, and replaced the partial string queries with regex queries. it was a temporary measure, i told myself - i can spend some more time improving it once i'd got other things working. the regex queries at least _worked_.
 
@@ -50,11 +50,11 @@ despite being primarily a key-value store, tantivy does support structured data 
 
 so i did the obvious thing any sane person would do, and implemented relations myself.
 
-this effectively involved building a tree of the necessary queries, and then fanning them out, running as many of them as possible at once, until all the links were resolved and the final results could be. a naive approach, certainly - but it was a start. a start that _worked_. a start that worked _slowly_.
+this effectively involved building a tree of the necessary queries, and then fanning them out, running as many of them as possible at once, until all the links were resolved and the final results could be derived. a naive approach, certainly - but it was a start. a start that _worked_. a start that worked _slowly_.
 
-a trivial query with a few resolved relations was still within the bounds of "quick", but anything that hit one of the more complicated multi-table relationships quickly bogged down the response times. coupled with the slower string queries from the regex matching, and i was looking at over a second for a moderately complicated query on my relatively powerful desktop cpu. for a web service, this was nigh on unacceptable to me.
+a trivial query with a few resolved relations was still within the bounds of "quick", but anything that hit one of the more complicated multi-table relationships quickly bogged down the response times. coupled with the slower string queries from the regex matching, i was looking at over a second for a moderately complicated query on my relatively powerful desktop cpu. for a web service, this was nigh on unacceptable to me.
 
-i knew that there was great research out there on how to optimise this problem, but it seemed like a _lot_ of work to continue trying to force this library to do something it just fundamentally wasn't designed for. i shelved search for a while - there were other parts of the project that were a higher priority, and we were aiming for a baseline launch in time for the upcoming expansion, dawntrail. search could wait for... _after_. whatever that meant.
+i knew that there was great research out there on how to optimise this problem, but it seemed like a _lot_ of work to continue trying to force this library to do something it just fundamentally wasn't designed for. i shelved search for a while - there were other parts of the project that were a higher priority, and we were aiming for a baseline launch in time for the upcoming expansion, dawntrail. search could wait until... _after_. whatever that meant.
 
 ----
 
@@ -64,7 +64,7 @@ the project had launched, the api was stable. we were live. live without search,
 
 i went back to the drawing board. for all its capabilities, tantivy really wasn't meshing with the relational nature of the data, and i was gaining little to no benefits from it's text search capabilities. instead, i looked to the old faithful rdbms.
 
-initially fiddling with both postgres and sqlite, i quickly settled in with sqlite. it had two main advantages over the alternative - for one, it was in-process. boilmaster is a completely self-sufficient monolith - for ease of development if nothing else, and postgres would have been the first external service it used. the other, and i'll admit this is perhaps a little silly, was that i could raise the column limit. there are a _few_ sheets (tables) in the data that have several thousand columns. far easier to set a compile flag to support that than try to split the data up.
+initially fiddling with both postgres and sqlite, i quickly settled in with sqlite. it had two main advantages over the alternative - for one, it was in-process. boilmaster is a completely self-sufficient monolith - for ease of development if nothing else - and postgres would have been the first external service it used. the other, and i'll admit this is perhaps the sillier of the two, was that i could raise the column limit. there are a _few_ sheets (tables) in the data that have several thousand columns. far easier to set a compile flag to support that than try to split the data up.
 
 again, i was working with a limited data set to keep the dev cycle short. the previous work i had done for tantivy was not without merit - much of the query parsing and normalisation could be kept as-is, only needing to swap out the database itself, wiring up the new ingestion and query execution code paths.
 
@@ -78,9 +78,9 @@ i enabled the full dataset.
 
 the ingestion phase, previously a minute or two at most, stretched on. growing tired and excitement fading, i went to bed for the night.
 
-when i woke up, the ingestion was still going. the database files had swelled well beyond 500mb each. this was not not what i'd hoped for.
+when i woke up, the ingestion was still going. the database files had swelled well beyond the size of the original dataset. this was not not what i'd hoped for.
 
-i started looking into optimisations - how could i minimise the write time? while researching, i also asked around a little. a friend's message caught my eye.
+i started looking into optimisations - how could i minimise the write time? write-ahead logging seemed promising, but i was unsure about how to tune the checkpointing. while researching, i also asked around a little. a friend's message caught my eye.
 
 > sounds like you want a virtual table, not sure how hard would it be to implement one tho
 > all I know is they exist
@@ -93,7 +93,7 @@ it was fast. not as fast as using the database directly, certainly, but fast _en
 
 i reasoned that, given those results, it was worth putting in a bit more time on this path. if it worked, not only did it mean that preparing the databases was _faster_ due to the lack of data ingestion - it meant i could easily support searching any version of the data i had access to!
 
-the primary optimisation added was an index. when preparing a query, sqlite runs a few different approaches to query elements past your virtual table implementation, asking which approach is likely to be fastest. the vast majority of relationships in queries result in a join targeting a single table row by its id - something i'm able to do with no searching at all in my data access layer. by informing sqlite of this, i'm able to influence it to preference these joins wherever it can. with this in place, query performance for relationships shot through the roof, landing squarely in the "fast enough" of the rest of the system.
+the primary optimisation added was an index. when preparing a query, sqlite runs a few different approaches on how it could query elements past your virtual table implementation, asking which approach is likely to be fastest. the vast majority of relationships in the queries i was generating result in a join targeting a single table row by its id - something i'm able to do with no searching at all in my data access layer. by informing sqlite of this, i'm able to influence it to preference these joins wherever it can. with this in place, query performance for relationships shot through the roof, landing squarely in the "fast enough" of the rest of the system.
 
 finally, a solution for search.
 
@@ -101,9 +101,11 @@ finally, a solution for search.
 
 ### conclusion.
 
-and so, the journey comes to its end. through the twists and turns, i ended up with an implementation i would never have even begun to consider back when this initiative began over a year ago.
+and so, this journey comes to its end. through the twists and turns, i ended up with an implementation i would never have even begun to consider back when this initiative began over a year ago.
 
-throughout the process, much was kept - the separation of concerns in query processing proved a sturdy base to build upon. throughout the process, _much_ was thrown away - from manic ideas on query optimisations, to entire folders of code.
+throughout the process, much was kept - the separation of concerns in query processing proved a sturdy base to build upon.
+
+throughout the process, _much_ was thrown away - from manic ideas on query optimisations, to entire folders of code.
 
 as with any project, it will never be complete - there's always another feature to add, a bug to fix, an optimisation to agonise over.
 
