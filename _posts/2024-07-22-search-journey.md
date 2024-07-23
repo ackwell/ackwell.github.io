@@ -2,111 +2,111 @@
 title: a journey into search.
 ---
 
-i've recently wrapped up the core implementation of a search feature - one that went through many twists and turns. it was a long journey to get to where it stands today, and i'd like to revisit that journey to share some of my learnings (and mistakes)!
+I've recently wrapped up the core implementation of a search feature - one that went through many twists and turns. It was a long journey to get to where it stands today, and I'd like to revisit that journey to share some of my learnings (and mistakes)!
 
-the feature was written as part of [boilmaster](https://github.com/ackwell/boilmaster), a web service written in rust that offers an http api for accessing game data from final fantasy xiv. boilmaster did not start development in a vacuum - from the outset, it was designed to replace the existing server software powering [xivapi](https://xivapi.com). as such, many of its requirements and implementation decisions stem from old learnings and pain points experienced by the maintainers of that service.
+The feature was written as part of [boilmaster](https://github.com/ackwell/boilmaster), a web service written in rust that offers an HTTP API for accessing game data from Final Fantasy XIV. boilmaster did not start development in a vacuum - from the outset, it was designed to replace the existing server software powering [xivapi](https://xivapi.com). As such, many of its requirements and implementation decisions stem from old learnings and pain points experienced by the maintainers of that service.
 
-relevant to this tale are it's requirements around ongoing maintenance work - or rather, the lack thereof. we want to reduce the manual intervention to keep the system running to the absolute minimum possible. to this end, the service is able to automatically update the game data it uses, as well as the community-contributed schema declarations used to read the data.
+Relevant to this tale are it's requirements around ongoing maintenance work - or rather, the lack thereof. We want to reduce the manual intervention to keep the system running to the absolute minimum possible. To this end, the service is able to automatically update the game data it uses, as well as the community-contributed schema declarations used to read the data.
 
-we start the journey into search with, of all things, a search engine library
+We start the journey into search with, of all things, a search engine library.
 
 ----
 
 ### tantivy: a paradise.
 
-i begun by spiking out an implementation of search over a reduced dataset using [tantivy](https://github.com/quickwit-oss/tantivy) - a search engine library akin in purpose to lucene, written in rust.
+I begun by spiking out an implementation of search over a reduced dataset using [tantivy](https://github.com/quickwit-oss/tantivy) - a search engine library akin in purpose to lucene, written in rust.
 
-our schemas are rarely comprehensive, and may change regularly as discoveries are made and mistakes are fixed. as a consequence, an early choice was to completely decouple the data in the search engine from those schemas. an incoming search query would first be "normalised", replacing schema-driven naming and structures with a flattened query targeting data directly by its position in raw file structure.
+Our schemas are rarely comprehensive, and may change regularly as discoveries are made and mistakes are fixed. As a consequence, an early choice was to completely decouple the data in the search engine from those schemas. An incoming search query would first be "normalised", replacing schema-driven naming and structures with a flattened query targeting data directly by its position in raw file structure.
 
-early results were promising! query speed was well and truly beyond what i'd hoped for, and tantivy's in-code query structure made it trivial to translate my (now-normalised) queries into something it understood. even with the full dataset enabled, it could ingest and prepare a full search index in around 10 minutes, with room to optimise if needed.
+Early results were promising! Query speed was well and truly beyond what I'd hoped for, and tantivy's in-code query structure made it trivial to translate my (now-normalised) queries into something it understood. Even with the full dataset enabled, it could ingest and prepare a full search index in around 10 minutes, with room to optimise as needed.
 
-with such a resounding success on the spike, i started to flesh the implementation out. to minimise the problem space, until now i'd been working exclusively with english data. in addition to english, the game also includes data in japanese, german, and french. i added those to the dataset.
+With such a resounding success on the spike, I started to flesh the implementation out. To minimise the problem space, until now I'd been working exclusively with English data. In addition to English, the game also includes data in Japanese, German, and French. I added those to the dataset.
 
 ----
 
 ### tokenisation: thus did the first doom befall us.
 
-tantivy ships with built in tokenisation and stemming support for many languages, including all but japanese in the languages i intended to support. there is also excellent third-party support for japanese, so i hadn't been too concerned from the outset about getting full text search working on this data set.
+Tantivy ships with built in tokenisation and stemming support for many languages, including all but Japanese among the languages I intended to support. There is also excellent third-party support for Fapanese, so I hadn't been too concerned from the outset about getting full text search working on this data set.
 
-integration of lindera, the japanese-supporting library i eventually chose, went smoothly. the dictionary files it used to provide stemming were pretty hefty on the file size - but i figured that was just the price one paid to get good search results in a difficult-to-stem language.
+Integration of lindera, the Japanese tokenisation library I eventually chose, went smoothly. The dictionary files it used to provide stemming were pretty hefty on the file size - but I figured that was just the price one paid to get good search results in a difficult-to-stem language.
 
-excitedly, i ran some queries. english, as before was working great! french also seemed to be working as expected, and some quick checks in japanese showed that the stemming was working - at least, as well as i could tell.
+Excitedly, I ran some queries. English, as before, was working great! French also seemed to be working as expected, and some quick checks in Japanese showed that the stemming was working - at least, as well as I could tell.
 
-but then i checked german - this time looking for "fire" to see if it would pick up some of the related spells such as "fire ii". except, unlike english, the german localisation team had chosen to use the _other_ final fantasy naming scheme for spells. where english had "fire" and "fire ii", german had "feuer" and "feura". this... did not stem well.
+But then I checked German - this time looking for "fire" to see if it would pick up some of the related spells such as "fire ii". Except, unlike English, the German localisation team had chosen to use the _other_ final fantasy naming scheme for spells. Where English had "fire" and "fire ii", German had "feuer" and "feura". This... did not stem well. Searches for either did not return the other, and splitting the difference with "feu" got me nowhere. An alternative was needed.
 
-looking into my options here, i was quickly becoming disillusioned with the tokenisation of the strings. as a band-aid, i stripped out the tokenisation filters, and replaced the partial string queries with regex queries. it was a temporary measure, i told myself - i can spend some more time improving it once i'd got other things working. the regex queries at least _worked_.
+Looking into my options, I was quickly became disillusioned with the process of tokenising the strings. As a band-aid, I stripped out the tokenisation filters, and replaced the term queries with regex queries. It was a temporary measure, I told myself - I can spend some more time improving it once I'd got other things working. The regex queries at least _worked_.
 
-so i moved onto the next item on the list - sorting out the relationships.
+So I moved onto the next item on the list - sorting out the relationships.
 
 ----
 
 ### relationships: thus did the second doom break us.
 
-a little background is perhaps needed here. the data being exposed is effectively a relational data store, however the relations aren't encoded in the data or its associated metadata anywhere - only in the code within the game that reads it. as a result, these relationships are defined, and maintained, as part of the schemas mentioned above.
+A little background is perhaps needed here. The data being exposed is effectively a relational data store, however the relations aren't encoded in the data or its associated metadata anywhere - only in the code within the game that reads it. As a result, these relationships are defined, and maintained, as part of the community schemas mentioned above.
 
-this means the relationships can, and _do_, change.
+This means the relationships can, and _do_, change.
 
-despite being primarily a key-value store, tantivy does support structured data such as json in its values. it does not, however, handle relationships that _aren't_ known at schema declaration time.
+Despite being primarily a key-value store, tantivy does support structured data such as json in its values. It does not, however, handle relationships that _aren't_ known at schema declaration time.
 
-so i did the obvious thing any sane person would do, and implemented relations myself.
+So I did the obvious thing any sane person would do, and implemented relations myself.
 
-this effectively involved building a tree of the necessary queries, and then fanning them out, running as many of them as possible at once, until all the links were resolved and the final results could be derived. a naive approach, certainly - but it was a start. a start that _worked_. a start that worked _slowly_.
+This effectively involved building a tree of the necessary queries, and then fanning them out, running as many of them as possible at once, until all the links were resolved and the final results could be derived. A naive approach, certainly - but it was a start. A start that worked... _slowly_.
 
-a trivial query with a few resolved relations was still within the bounds of "quick", but anything that hit one of the more complicated multi-table relationships quickly bogged down the response times. coupled with the slower string queries from the regex matching, i was looking at over a second for a moderately complicated query on my relatively powerful desktop cpu. for a web service, this was nigh on unacceptable to me.
+A trivial query with a few resolved relations was still within the bounds of "quick", but anything that hit one of the more complicated multi-table relationships quickly bogged down the response times. Coupled with the slower string queries from the regex matching, I was looking at over a second for a moderately complicated query on my relatively powerful desktop cpu. For a web service, this was nigh on unacceptable to me.
 
-i knew that there was great research out there on how to optimise this problem, but it seemed like a _lot_ of work to continue trying to force this library to do something it just fundamentally wasn't designed for. i shelved search for a while - there were other parts of the project that were a higher priority, and we were aiming for a baseline launch in time for the upcoming expansion, dawntrail. search could wait until... _after_. whatever that meant.
+I knew that there was great research out there on how to optimise this problem space, but it seemed like a _lot_ of work to continue trying to force this library to do something it just fundamentally wasn't designed for. I shelved search for a while - there were other parts of the project that were a higher priority, and we were aiming for a baseline launch in time for the upcoming expansion, Dawntrail. Search could wait until "after". Whatever that meant.
 
 ----
 
 ### sqlite: a paradise, part two.
 
-the project had launched, the api was stable. we were live. live without search, but live. my focus turned back to search - how _could_ i get search up and running, with appropriate performance.
+The project had launched, the API was stable. We were live. Live without search, but live. My focus turned back to search - how _could_ I get search up and running, with appropriate performance.
 
-i went back to the drawing board. for all its capabilities, tantivy really wasn't meshing with the relational nature of the data, and i was gaining little to no benefits from it's text search capabilities. instead, i looked to the old faithful rdbms.
+I went back to the drawing board. For all its capabilities, tantivy really wasn't meshing with the relational nature of the data, and I was gaining little to no benefits from it's text search capabilities. Rather than digging my hole futher, I instead took the opportunity to look into options around old faithful RDBMS solutions.
 
-initially fiddling with both postgres and sqlite, i quickly settled in with sqlite. it had two main advantages over the alternative - for one, it was in-process. boilmaster is a completely self-sufficient monolith - for ease of development if nothing else - and postgres would have been the first external service it used. the other, and i'll admit this is perhaps the sillier of the two, was that i could raise the column limit. there are a _few_ sheets (tables) in the data that have several thousand columns. far easier to set a compile flag to support that than try to split the data up.
+Initially fiddling with both PostgreSQL and SQLite, I quickly settled in with SQLite. It had two main advantages over the alternative - for one, it was in-process. boilmaster is a completely self-sufficient monolith - for ease of development if nothing else - and PostgreSQL would have been the first external service it used. The other, and I'll admit this is perhaps the sillier of the two, was that I could raise the column limit. There are a _few_ sheets (tables) in the data that have several thousand columns. Far easier to set a compile flag to support that than try to split the data up.
 
-again, i was working with a limited data set to keep the dev cycle short. the previous work i had done for tantivy was not without merit - much of the query parsing and normalisation could be kept as-is, only needing to swap out the database itself, wiring up the new ingestion and query execution code paths.
+Again, I was working with a limited data set to keep the dev cycle short. The previous work I had done for tantivy was not without merit - much of the query parsing and normalisation could be kept as-is, only needing to swap out the database itself, wiring up the new ingestion and query execution code paths.
 
-before long, i had a working sqlite database with a few tables. queries were fast. ingestion was fast. _relationships_ were fast. it was working! i tweaked it to add the other three languages, just as i had months ago in tantivy. sqlite took it in it's stride.
+Before long, I had a working SQLite database with a few tables. Queries were fast. Ingestion was fast. _Relationships_ were fast. It was working! I tweaked it to add the other three languages, just as I had months ago with tantivy. SQLite took it in it's stride.
 
-i enabled the full dataset.
+I enabled the full dataset.
 
 ----
 
 ### ingestion performance: thus did the third doom undo us.
 
-the ingestion phase, previously a minute or two at most, stretched on. growing tired and excitement fading, i went to bed for the night.
+The ingestion phase, previously a minute or two at most, stretched on. Growing tired and excitement fading, I went to bed for the night.
 
-when i woke up, the ingestion was still going. the database files had swelled well beyond the size of the original dataset. this was not not what i'd hoped for.
+On waking, the ingestion was still ongoing. The database files had swelled well beyond the size of the original dataset. This was far from what I'd hoped for.
 
-i started looking into optimisations - how could i minimise the write time? write-ahead logging seemed promising, but i was unsure about how to tune the checkpointing. while researching, i also asked around a little. a friend's message caught my eye.
+I started looking into optimisations - how could I minimise the write time? Write-ahead logging seemed promising, but I was unsure about how to tune the checkpointing. While researching, I also asked around a little. A friend's message caught my eye.
 
 > sounds like you want a virtual table, not sure how hard would it be to implement one tho <br/>
 > all I know is they exist
 
-i also knew they existed, had seen them in passing while reading sqlite's documentation. virtual tables allow you to register custom code that acts like a table, and can be queried by sqlite - but read its data however you like, rather than from the database file itself. i had originally dismissed them as an option - i didn't want to perform a full table scan for a query if i could avoid it - but my recent escapades in query building and testing had me doubting that position. i told myself i'd give it a quick test.
+I was vaguely aware of virtual tables - had seen them in passing while reading SQLite's documentation. Virtual tables allow you to register custom code that acts like a table, and can be queried by SQLite - but read its data however you like, rather than from the database file itself. I had originally dismissed them as an option - I didn't want to perform a full table scan for a query if I could avoid it - but my recent escapades in query building and testing had me doubting that position. I told myself I'd give it a quick test.
 
-spinning up a new branch to play around with, i quickly swapped out the sqlite library to rusqlite (it had bindings for virtual tables), and set about building a trivial implementation of one. no indexes or optimisations, just a full table scan for any query. much as i'd been able to inherit the query logic from tantivy when i started working with sqlite, again i was able to reuse the query logic from the ingested sqlite implementation for this - only the table _implementation_ was changing, not the schema!
+Spinning up a new branch to play around with, I quickly swapped out the sqlite library to rusqlite (it had bindings for virtual tables), and set about building a trivial implementation of one. No indexes or optimisations, just a full table scan for any query. much as I'd been able to inherit the query logic from tantivy when I started working with SQLite, again I was able to reuse the query logic from the ingested SQlite implementation for attempt at virtual tables - only the table's _implementation_ was changing, not the schema!
 
-it was fast. not as fast as using the database directly, certainly, but fast _enough_. queries with relationships were unsurprisingly slow - it had to do a _lot_ of scans to resolve those, but this was a result well beyond what i had expected.
+It was fast to query. Not as fast as using the database directly, certainly, but fast _enough_. Queries with relationships were unsurprisingly slow - it had to do a _lot_ of scans to resolve those, but this was a result well beyond what I had originally expected.
 
-i reasoned that, given those results, it was worth putting in a bit more time on this path. if it worked, not only did it mean that preparing the databases was _faster_ due to the lack of data ingestion - it meant i could easily support searching any version of the data i had access to!
+I reasoned that, given those results, it was worth putting in a bit more time on this path. If it worked, not only did it mean that preparing the databases was _faster_ due to the lack of data ingestion - it meant I could easily support searching any version of the data that the system had access to!
 
-the primary optimisation added was an index. when preparing a query, sqlite runs a few different approaches on how it could query elements past your virtual table implementation, asking which approach is likely to be fastest. the vast majority of relationships in the queries i was generating result in a join targeting a single table row by its id - something i'm able to do with no searching at all in my data access layer. by informing sqlite of this, i'm able to influence it to preference these joins wherever it can. with this in place, query performance for relationships shot through the roof, landing squarely in the "fast enough" of the rest of the system.
+The primary optimisation added was an index. When preparing a query, SQLite runs a few different approaches on how it could query elements past your virtual table implementation, asking which approach is likely to be fastest. The vast majority of relationships in the queries I was generating result in a `JOIN` targeting a single table row by its id - something I'm able to do with no searching at all in my data access layer. By informing SQLite of this, I'm able to influence it to preference these joins wherever it can. With this in place, query performance for relationships shot through the roof, landing squarely in the "fast enough" bucket of the rest of the system.
 
-finally, a solution for search.
+Finally, a solution for search.
 
 ----
 
 ### conclusion.
 
-and so, this journey comes to its end. through the twists and turns, i ended up with an implementation i would never have even begun to consider back when this initiative began over a year ago.
+And so, this journey comes to its end. Through the twists and turns, I ended up with an implementation I would never have even begun to consider back when this initiative began over a year ago.
 
-throughout the process, much was kept - the separation of concerns in query processing proved a sturdy base to build upon.
+Throughout the process, much was kept - the separation of concerns in query processing proved a sturdy base to build upon.
 
-throughout the process, _much_ was thrown away - from manic ideas on query optimisations, to entire folders of code.
+Throughout the process, _much_ was thrown away - from manic ideas on query optimisations, to entire folders of code.
 
-as with any project, it will never be complete - there's always another feature to add, a bug to fix, an optimisation to agonise over.
+As with any project, it will never be complete - there's always another feature to add, a bug to fix, an optimisation to agonise over.
 
-but for now, it's live.
+But for now, it's live.

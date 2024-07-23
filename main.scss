@@ -172,6 +172,8 @@ header {
 
 // Compiled page content styling
 .content {
+	text-transform: lowercase;
+
   .heading-permalink {
     position: absolute;
     top: 50%;
@@ -224,6 +226,7 @@ header {
   // Inline code
   code {
     color: $text-dim-color;
+		text-transform: initial;
     &::before,
     &::after {
       content: '`'
