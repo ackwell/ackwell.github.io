@@ -26,7 +26,7 @@ With such a resounding success on the spike, I started to flesh the implementati
 
 ### tokenisation: thus did the first doom befall us.
 
-Tantivy ships with built in tokenisation and stemming support for many languages, including all but Japanese among the languages I intended to support. There is also excellent third-party support for Fapanese, so I hadn't been too concerned from the outset about getting full text search working on this data set.
+Tantivy ships with built in tokenisation and stemming support for many languages, including all but Japanese among the languages I intended to support. There is also excellent third-party support for Japanese, so I hadn't been too concerned from the outset about getting full text search working on this data set.
 
 Integration of lindera, the Japanese tokenisation library I eventually chose, went smoothly. The dictionary files it used to provide stemming were pretty hefty on the file size - but I figured that was just the price one paid to get good search results in a difficult-to-stem language.
 
