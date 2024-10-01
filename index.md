@@ -5,7 +5,7 @@ title: about.
 
 _"It's code. We can do anything."_
 
-**Senior software engineer** at [Canva](https://www.canva.com/).<br>
+**Staff software engineer** at [Canva](https://www.canva.com/).<br>
 **Core maintainer** of [xivanalysis](https://xivanalysis.com/).
 
 **Currently** 
