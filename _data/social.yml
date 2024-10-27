@@ -1,4 +1,4 @@
-- icon: fas fa-at
+- icon: fas fa-envelope
   username: saxon@ackwell.au
   url: mailto:saxon+portfolio@ackwell.au
 
@@ -6,9 +6,9 @@
   username: ackwell
   url: https://github.com/ackwell
 
-- icon: fab fa-twitter
-  username: ackwell_
-  url: https://twitter.com/ackwell_
+- icon: fab fa-bluesky
+  username: '@ackwell.au'
+  url: https://bsky.app/profile/ackwell.au
 
 - icon: fab fa-discord
   username: '@ackwell'
