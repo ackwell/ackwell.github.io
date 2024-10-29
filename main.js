@@ -16,6 +16,19 @@ function onReady() {
 		updateTheme()
 	})
 
+	// COMMIT TO THE BIT
+	let bitComitted = localStorage.getItem('commitTo') === 'theBit'
+	const bitComitter = document.querySelector(".the-bit")
+	function updateBit() {
+		document.body.classList.toggle('committed-to-the-bit')
+	}
+	updateBit()
+	bitComitter.addEventListener('click', function() {
+		bitComitted = !bitComitted
+		localStorage.setItem('commitTo', bitComitted ? 'theBit' : 'nothing')
+		updateBit()
+	})
+	
 	// Extract the language of code blocks and add as a data attribute for use from css
 	for (const langElem of document.querySelectorAll('[class*="language-"]')) {
 		let language

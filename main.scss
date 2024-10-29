@@ -152,27 +152,44 @@ header {
   }
 }
 
-.lightswitch {
+.options {
   position: absolute;
   top: 50%;
   right: 0;
-  border: none;
-  outline: none;
-  padding: 0;
   transform: translateY(-50%);
-  background: none;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
 
-  i {
+  button {
+    border: none;
+    padding: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
     vertical-align: middle;
+    cursor: pointer;
+  
+    i {
+      vertical-align: middle;
+    }
+
+    &.the-bit {
+      font-size: 1.15em;
+
+      .committed-to-the-bit & {
+        font-weight: bold;
+      }
+    }
+  }
+
+  button + button {
+    padding-left: 10px;
   }
 }
 
 // Compiled page content styling
 .content {
-	text-transform: lowercase;
+  .committed-to-the-bit & {
+	  text-transform: lowercase;
+  }
 
   .heading-permalink {
     position: absolute;
