@@ -20,7 +20,7 @@ function onReady() {
 	let bitComitted = localStorage.getItem('commitTo') === 'theBit'
 	const bitComitter = document.querySelector(".the-bit")
 	function updateBit() {
-		document.body.classList.toggle('committed-to-the-bit')
+		document.body.classList.toggle('committed-to-the-bit', bitComitted)
 	}
 	updateBit()
 	bitComitter.addEventListener('click', function() {
