@@ -1,3 +1,4 @@
 header:
 - page: index.md
 - page: posts.html
+- page: social.md

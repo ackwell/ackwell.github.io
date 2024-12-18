@@ -1,0 +1,11 @@
+- category: folk.
+  buttons:
+  - title: ackwell.
+    image: /assets/88x31/ackwell-coil.png
+    url: https://ackwell.au/
+
+- category: stuff.
+  buttons:
+  - title: eightyeightthirty.one
+    image: https://eightyeightthirty.one/88x31.png
+    url: https://eightyeightthirty.one/

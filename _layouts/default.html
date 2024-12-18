@@ -52,6 +52,7 @@
       {{ content }}
     </main>
 
+    {%- unless page.omit_footer -%}
     <hr>
 
     <footer>
@@ -73,6 +74,7 @@
         {%- endfor -%}
       </ul>
     </footer>
+    {%- endunless -%}
   </div>
 </body>
 </html>

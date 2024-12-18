@@ -287,7 +287,7 @@ header {
   }
 }
 
-.social {
+footer ul {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -300,10 +300,30 @@ header {
       margin-right: 0;
     }
   }
+}
 
-  .icon {
-    width: 1em;
-    padding-right: 0.25em;
-    vertical-align: middle;
+// CSS is great.
+.social-grid.social-grid {
+  display: grid;
+  grid-template-columns: min-content min-content auto;
+  padding-left: 0;
+
+  li { display: contents; }
+  li::before { content: none; }
+}
+
+.icon {
+  width: 2ch;
+  padding-right: 0.25em;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.social-buttons {
+  padding-bottom: 1em;
+
+  a {
+    &::before { content: none; }
+    &::after { content: none; }
   }
 }
