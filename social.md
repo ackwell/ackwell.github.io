@@ -35,10 +35,18 @@ Thanks for visiting! You can typically contact me through any of the following:
 {% for category in site.data.buttons %}
   <h3>{{ category.category }}</h3>
   <div class="social-buttons">
-    {% for button in category.buttons %}
+    {%- for button in category.buttons -%}
       <a href="{{ button.url }}" title="{{ button.title }}">
-        <img src="{{ button.image }}" alt="{{ button.title }}">
+        <img
+          src="{{ button.image }}"
+          alt="{{ button.title }}"
+          width="88"
+          height="31"
+          decoding="async"
+          fetchpriority="low"
+          loading="lazy"
+        >
       </a>
-    {% endfor %}
+    {%- endfor -%}
   </div>
 {% endfor %}

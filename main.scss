@@ -320,7 +320,12 @@ footer ul {
 }
 
 .social-buttons {
-  padding-bottom: 1em;
+  line-height: 0;
+  font-size: 0;
+
+  + h3 {
+    padding-top: 1em;
+  }
 
   a {
     &::before { content: none; }
