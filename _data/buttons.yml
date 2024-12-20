@@ -3,9 +3,18 @@
   - title: ackwell.
     image: /assets/88x31/ackwell-coil.png
     url: https://ackwell.au/social
+  - title: ArcaneDisgea
+    image: https://arcanedisgea.com/i/88x31/88x31.png
+    url: https://arcanedisgea.com/
+  - title: notnite
+    image: https://notnite.com/buttons/notnite.png
+    url: https://notnite.com/
 
 - category: stuff.
   buttons:
   - title: eightyeightthirty.one
     image: https://eightyeightthirty.one/88x31.png
     url: https://eightyeightthirty.one/
+  - title: xivanalysis
+    image: /assets/88x31/xiva-arcadion.png # todo: host this on xiva?
+    url: https://xivanalysis.com/
