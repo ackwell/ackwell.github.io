@@ -2,17 +2,26 @@
   username: saxon@ackwell.au
   url: mailto:saxon+portfolio@ackwell.au
   description: professional.
+  footer: true
 
 - icon: fab fa-github
   username: ackwell
   url: https://github.com/ackwell
   description: code.
+  footer: true
 
 - icon: fab fa-bluesky
   username: '@ackwell.au'
   url: https://bsky.app/profile/ackwell.au
   description: the void.
+  footer: true
 
 - icon: fab fa-discord
   username: '@ackwell'
   description: banter.
+  footer: true
+
+- icon: fas fa-music
+  username: ackwell
+  url: https://listenbrainz.org/user/ackwell/
+  description: listening.

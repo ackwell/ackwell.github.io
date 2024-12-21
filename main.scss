@@ -307,6 +307,7 @@ footer ul {
   display: grid;
   grid-template-columns: min-content min-content auto;
   padding-left: 0;
+  margin-top: 1em;
 
   li { display: contents; }
   li::before { content: none; }

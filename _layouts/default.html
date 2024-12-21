@@ -57,7 +57,8 @@
 
     <footer>
       <ul class="social">
-        {%- for social in site.data.social -%}
+        {%- assign footer_social = site.data.social | where: "footer", true -%}
+        {%- for social in footer_social -%}
           <li>
             <i class="icon {{ social.icon }}"></i>
 

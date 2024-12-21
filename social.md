@@ -6,7 +6,7 @@ omit_footer: true
 
 ## social.
 
-Thanks for visiting! You can typically contact me through any of the following:
+Thanks for visiting! You can typically find or contact me through any of the following:
 
 <ul class="social-grid">
   {% for social in site.data.social %}
