@@ -38,7 +38,7 @@ Thanks for visiting! You can typically find or contact me through any of the fol
     {%- for button in category.buttons -%}
       <a href="{{ button.url }}" title="{{ button.title }}">
         <img
-          src="{{ button.image }}"
+          src="/assets/88x31/{{ button.image }}"
           alt="{{ button.title }}"
           width="88"
           height="31"

@@ -1,23 +1,32 @@
 - category: folk.
   buttons:
   - title: ackwell.
-    image: /assets/88x31/ackwell-coil.png
+    image: ackwell-coil.png
     url: https://ackwell.au/social
   - title: ArcaneDisgea
-    image: https://arcanedisgea.com/i/88x31/88x31.png
+    image: arcane-disgea.png
     url: https://arcanedisgea.com/
+  - title: blooym
+    image: blooym-mori.webp
+    url: https://blooym.dev/
   - title: notnite
-    image: https://notnite.com/buttons/notnite.png
+    image: notnite.png
     url: https://notnite.com/
   - title: philpax
-    image: https://philpax.me/88x31/philpax.png
+    image: philpax.png
     url: https://philpax.me/
+  - title: redstrate
+    image: redstrate-graphic.png
+    url: https://redstrate.com/
 
 - category: stuff.
   buttons:
   - title: eightyeightthirty.one
-    image: https://eightyeightthirty.one/88x31.png
+    image: eightyeightthirtyone.png
     url: https://eightyeightthirty.one/
+  - title: thermocoil boilmaster
+    image: boilmaster.png
+    url: https://v2.xivapi.com/
   - title: xivanalysis
-    image: /assets/88x31/xiva-arcadion.png # todo: host this on xiva?
+    image: xiva-arcadion.png # todo: host this on xiva?
     url: https://xivanalysis.com/
