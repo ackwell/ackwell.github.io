@@ -1,8 +1,13 @@
 - icon: fas fa-envelope
   username: saxon@ackwell.au
   url: mailto:saxon+portfolio@ackwell.au
-  description: professional.
+  description: old faithful.
   footer: true
+
+- icon: fab fa-linkedin
+  username: /in/ackwell
+  url: https://www.linkedin.com/in/ackwell/
+  description: professional.
 
 - icon: fab fa-github
   username: ackwell
