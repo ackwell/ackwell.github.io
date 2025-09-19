@@ -24,11 +24,11 @@
   - title: eightyeightthirty.one
     image: eightyeightthirtyone.png
     url: https://eightyeightthirty.one/
-  - title: easel
-    image: easel-legacy.png
-  - title: thermocoil boilmaster
+  - title: boilmaster
     image: boilmaster.png
     url: https://v2.xivapi.com/
+  - title: easel
+    image: easel-legacy.png
   - title: xivanalysis
     image: xiva-arcadion.png # todo: host this on xiva?
     url: https://xivanalysis.com/
