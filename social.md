@@ -36,7 +36,9 @@ Thanks for visiting! You can typically find or contact me through any of the fol
   <h3>{{ category.category }}</h3>
   <div class="social-buttons">
     {%- for button in category.buttons -%}
-      <a href="{{ button.url }}" title="{{ button.title }}">
+      {%- if button.url -%}
+        <a href="{{ button.url }}" title="{{ button.title }}">
+      {%- endif -%}
         <img
           src="/assets/88x31/{{ button.image }}"
           alt="{{ button.title }}"
@@ -46,7 +48,9 @@ Thanks for visiting! You can typically find or contact me through any of the fol
           fetchpriority="low"
           loading="lazy"
         >
-      </a>
+      {%- if button.url -%}
+        </a>
+      {%- endif -%}
     {%- endfor -%}
   </div>
 {% endfor %}
