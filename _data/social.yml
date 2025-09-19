@@ -21,6 +21,10 @@
   description: the void.
   footer: true
 
+- icon: fab fa-signal-messenger
+  username: 'ackwell.3835'
+  description: chat.
+
 - icon: fab fa-discord
   username: '@ackwell'
   description: banter.
