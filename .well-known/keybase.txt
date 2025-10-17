@@ -1,0 +1,74 @@
+==================================================================
+https://keybase.io/ackwell
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://ackwell.au
+  * I am ackwell (https://keybase.io/ackwell) on keybase.
+  * I have a public key with fingerprint 4DA7 7E1A 7387 D881 54A4  4459 351D E726 741F 7A3D
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0101774c71cd8918483b33d4216ada9b44901e24918fa28250fe0b93abae463d93d60a",
+      "fingerprint": "4da77e1a7387d88154a44459351de726741f7a3d",
+      "host": "keybase.io",
+      "key_id": "351de726741f7a3d",
+      "kid": "0101774c71cd8918483b33d4216ada9b44901e24918fa28250fe0b93abae463d93d60a",
+      "uid": "1ea66ee38b97855555250617ad602019",
+      "username": "ackwell"
+    },
+    "service": {
+      "hostname": "ackwell.au",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1760693815,
+  "expire_in": 157680000,
+  "prev": "ee3521c4932b3e3da77fc833f410eb8e8707c5af4d47cd55dd51827fe8e21845",
+  "seqno": 8,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.1.17
+Comment: https://keybase.io/crypto
+
+yMM8AnicrVJ7UFRVHF4kKSgINRyGgdQrDyNY7/vcu4EtjRiJTTxSMx2X+zi73IDd
+5e5dkJBBYHgoWaMCgzryiBxiLCJSSzRHHKhQB6NBI3AUFDQwH8A4jMZI5zL1RzP9
+2e+fM+d3vu873+87p8vX0+DjwYTcCdeWfRjrcbGzym1In/ID+ZjokPMwUz6WAecX
+mClDl2bJUGTMhOEETgBAS4CQZI4nOJqjRIqSaZJgBVngRZrmcQKSNDqyCiRHMrgV
+4iJPCaIAaZaSeUpmcQGLwqyK3QZVp6rYNSRLywIAkBAAxQGZ4wiGFmiaZniKIWQI
+SBbQhBUIlIyI6Q6XzkDmRMEFjYoD9dDGMm/vP/D/s2/3vBwBBZaFkOJEHnCMXojB
+EkBAKBIneB3ogqpdyIIILUgZuTAzEyuIwlAzR5Ggnqs+yL8BRsGNiE7VoTkkRybq
+p2ua02XSeVqeUwfmQtHyt4RFVOwyChExcqDqUhx2zEQgpKQpuiYBWJzlKRRlFAZ3
+OBUVWhQdwQCWw1Hp98AcJImmYEhConmKFClI6Q9hlTiKstIEDkUOcgAHEiNYaZkG
+kswwsswQHAmskIMkypHB9KGy7Q7MxCGbgg1JuhSbXdDcKsQKzndue8bg4WPwWrhA
+/1wGH2//f75cVYC/oc7VbkxJSm0xpTbsO9BSncJPrgRmNj2kI7taVWqDT++OHgwt
+a76wwOtUg2Ghf/EWS+7tpqz3sGvq8MyUGs4WFU+za+cWJe+bu5Xw/ZhtT+fxgJvH
+stvX57WOdP94bs298qZTIQnDHTWRbeBe61Baw7q7YUcsjb0/B6YEneio/cX38GuT
+L78a9XVjY8zUyJnl7e7qiy+MFscFPv0teaz5Tl9P+tChynBt9a6xwI174d4nY623
+2vYwjoTYzPNr3lpnCPukYH9VQsWlh9+9n+j2fjD3+a9vpJjDv9icd3WyROn+qcwz
+dVnpZWP0c5XfvBkFBoCtfjDxqL+8daKy5OzE66bdL2ac2cWZb68aNV9pqKs/bKid
+qfAs+mBRJG00nBw+saT++S1Bf5wUppvG0t7Z/3T8ftmm+zePdG6tWxzUs6qrL7fp
+7kDYweDIxBsVEUNe1xZP9y1NvPHsuU2Xl5SbPS/ENKyImO35arY3eKnpwON4z+rV
+WuUTZxLX3Ev79YDyjz89miRsCI0fpV/yiXXuEGKc/lRa8/qsltbt/f3LN8xd7wt4
+nDNxHASePhYzsWJjoeVR8KWUB5Hyoe6ZR8lt3tNrt3kb3w7yHYj3kzZndfWfje6k
+Zme//NPePh4asTJfji/59ofEj+oPfla4k6x5xWKuaCqseli0PS5OTn63pn3w9+sj
+42ppzGhp484W218ogLpc
+=u1lN
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/ackwell
+
+==================================================================

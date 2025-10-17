@@ -34,3 +34,8 @@
   username: ackwell
   url: https://listenbrainz.org/user/ackwell/
   description: listening.
+
+- icon: fab fa-keybase
+  username: ackwell
+  url: https://keybase.io/ackwell
+  description: verify.
